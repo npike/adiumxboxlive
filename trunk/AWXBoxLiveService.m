@@ -1,5 +1,5 @@
 //
-//  AWBonjourService.m
+//  AWXBoxLiveService.m
 //  Adium
 //
 //  Created by Adam Iser on 8/26/04.
@@ -7,20 +7,20 @@
 //
 
 #import <Adium/AIStatusControllerProtocol.h>
-#import "AWBonjourAccount.h"
-#import "AWBonjourService.h"
-#import "ESBonjourAccountViewController.h"
+#import "AWXBoxLiveAccount.h"
+#import "AWXBoxLiveService.h"
+#import "ESXBoxLiveAccountViewController.h"
 #import <Adium/DCJoinChatViewController.h>
 
-@implementation AWBonjourService
+@implementation AWXBoxLiveService
 
 //Account Creation
 - (Class)accountClass{
-	return [AWBonjourAccount class];
+	return [AWXBoxLiveAccount class];
 }
 
 - (AIAccountViewController *)accountViewController{
-    return [ESBonjourAccountViewController accountViewController];
+    return [ESXBoxLiveAccountViewController accountViewController];
 }
 
 - (DCJoinChatViewController *)joinChatView{
@@ -29,19 +29,19 @@
 
 //Service Description
 - (NSString *)serviceCodeUniqueID{
-	return @"bonjour-libezv";
+	return @"XBoxLive-libezv";
 }
 - (NSString *)serviceID{
-	return @"Bonjour";
+	return @"XBoxLive";
 }
 - (NSString *)serviceClass{
-	return @"Bonjour";
+	return @"XBoxLive";
 }
 - (NSString *)shortDescription{
-	return @"Bonjour";
+	return @"XBoxLive";
 }
 - (NSString *)longDescription{
-	return @"Bonjour";
+	return @"XBoxLive";
 }
 - (NSCharacterSet *)allowedCharacters{
 	return [[NSCharacterSet illegalCharacterSet] invertedSet];
@@ -61,7 +61,7 @@
 - (BOOL)supportsProxySettings{
 	return NO;
 }
-//No need for a password for Bonjour accounts
+//No need for a password for XBoxLive accounts
 - (BOOL)requiresPassword
 {
 	return NO;

@@ -1,6 +1,6 @@
 /*
- * Project:     Adium Bonjour Plugin
- * File:        AWBonjourAccount.h
+ * Project:     Adium XBoxLive Plugin
+ * File:        AWXBoxLiveAccount.h
  * Author:      Andrew Wellington <proton[at]wiretapped.net>
  *
  * License:
@@ -27,7 +27,7 @@
 @protocol AWEzvClientProtocol;
 @class AWEzv;
 
-@interface AWBonjourAccount : AIAccount <AWEzvClientProtocol> {
+@interface AWXBoxLiveAccount : AIAccount <AWEzvClientProtocol> {
     AWEzv				*libezv;
     NSMutableSet		*libezvContacts;
     NSString			*savedAwayMessage;

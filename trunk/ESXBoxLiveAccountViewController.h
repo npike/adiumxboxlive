@@ -16,7 +16,7 @@
  
 #import <Adium/AIAccountViewController.h>
 
-@interface ESBonjourAccountViewController : AIAccountViewController {
+@interface ESXBoxLiveAccountViewController : AIAccountViewController {
 
 }
 

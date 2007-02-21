@@ -14,10 +14,10 @@
  * write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-#import "ESBonjourAccountViewController.h"
+#import "ESXBoxLiveAccountViewController.h"
 
 //Use the default profile view, but override optionsView to be nil so it isn't displayed
-@implementation ESBonjourAccountViewController
+@implementation ESXBoxLiveAccountViewController
 
 //Account specific views -----------------------------------------------------------------------------------------------
 #pragma mark Account specific views
