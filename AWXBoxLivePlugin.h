@@ -1,6 +1,6 @@
 /*
- * Project:     Adium Bonjour Plugin
- * File:        AWBonjourPlugin.h
+ * Project:     Adium XBoxLive Plugin
+ * File:        AWXBoxLivePlugin.h
  * Author:      Andrew Wellington <proton[at]wiretapped.net>
  *
  * License:
@@ -24,7 +24,7 @@
 
 #import <Adium/AIPlugin.h>
 
-@interface AWBonjourPlugin : AIPlugin {
+@interface AWXBoxLivePlugin : AIPlugin {
 
 }
 

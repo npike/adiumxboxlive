@@ -1,6 +1,6 @@
 /*
- * Project:     Adium Bonjour Plugin
- * File:        AWBonjourAccount.m
+ * Project:     Adium XBoxLive Plugin
+ * File:        AWXBoxLiveAccount.m
  * Author:      Andrew Wellington <proton[at]wiretapped.net>
  *
  * License:
@@ -22,11 +22,11 @@
  * 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-#import "AWBonjourAccount.h"
+#import "AWXBoxLiveAccount.h"
 #import "AWEzv.h"
 #import "AWEzvContact.h"
 #import "AWEzvDefines.h"
-#import "AWBonjourPlugin.h"
+#import "AWXBoxLivePlugin.h"
 #import <Adium/AIContactControllerProtocol.h>
 #import <Adium/AIChatControllerProtocol.h>
 #import <Adium/AIContentControllerProtocol.h>
@@ -42,13 +42,13 @@
 #import <AIUtilities/AIObjectAdditions.h>
 
 static	NSLock				*threadPreparednessLock = nil;
-static	NDRunLoopMessenger	*bonjourThreadMessenger = nil;
+static	NDRunLoopMessenger	*XBoxLiveThreadMessenger = nil;
 static	AWEzv				*_libezvThreadProxy = nil;
 static	NSAutoreleasePool	*currentAutoreleasePool = nil;
 
 #define	AUTORELEASE_POOL_REFRESH	5.0
 
-@interface AWBonjourAccount (PRIVATE)
+@interface AWXBoxLiveAccount (PRIVATE)
 - (NSString *)UIDForContact:(AWEzvContact *)contact;
 
 - (void)setAccountIdleTo:(NSDate *)idle;
@@ -56,7 +56,7 @@ static	NSAutoreleasePool	*currentAutoreleasePool = nil;
 - (void)setAccountUserImage:(NSImage *)image;
 @end
 
-@implementation AWBonjourAccount
+@implementation AWXBoxLiveAccount
 //
 - (void)initAccount
 {
@@ -80,7 +80,7 @@ static	NSAutoreleasePool	*currentAutoreleasePool = nil;
 	return YES;
 }
 
-//Bonjour should just ignore network reachability
+//XBoxLive should just ignore network reachability
 - (BOOL)connectivityBasedOnNetworkReachability
 {
 	return NO;
@@ -94,7 +94,7 @@ static	NSAutoreleasePool	*currentAutoreleasePool = nil;
 		[threadPreparednessLock lock];
 		
 		//Detach the thread, which will unlock threadPreparednessLock when it is ready
-		[NSThread detachNewThreadSelector:@selector(prepareBonjourThread)
+		[NSThread detachNewThreadSelector:@selector(prepareXBoxLiveThread)
 								 toTarget:self
 							   withObject:nil];
 		
@@ -188,7 +188,7 @@ static	NSAutoreleasePool	*currentAutoreleasePool = nil;
 
 	} else {
 		if (![listContact remoteGroupName]) {
-			[listContact setRemoteGroupName:@"Bonjour"];
+			[listContact setRemoteGroupName:@"XBoxLive"];
 		}
 		
 		//We only get state change updates on Online contacts
@@ -352,8 +352,8 @@ static	NSAutoreleasePool	*currentAutoreleasePool = nil;
 
 - (void)reportError:(NSString *)error ofLevel:(AWEzvErrorSeverity)severity
 {
-	NSLog(@"Bonjour Error (%i): %@", severity, error);
-	AILog(@"Bonjour Error (%i): %@", severity, error);
+	NSLog(@"XBoxLive Error (%i): %@", severity, error);
+	AILog(@"XBoxLive Error (%i): %@", severity, error);
 }
 
 - (void)reportError:(NSString *)error ofLevel:(AWEzvErrorSeverity)severity forUser:(NSString *)contactUniqueID
@@ -363,8 +363,8 @@ static	NSAutoreleasePool	*currentAutoreleasePool = nil;
 					   withObject:contactUniqueID];
 		
 	} else {
-		NSLog(@"Bonjour Error (%i): %@", severity, error);
-		AILog(@"Bonjour Error (%i): %@", severity, error);
+		NSLog(@"XBoxLive Error (%i): %@", severity, error);
+		AILog(@"XBoxLive Error (%i): %@", severity, error);
 	}
 }
 
@@ -542,23 +542,23 @@ static	NSAutoreleasePool	*currentAutoreleasePool = nil;
 	return [contact uniqueID];
 }
 
-#pragma mark Bonjour Thread
+#pragma mark XBoxLive Thread
 
-- (void)clearBonjourThreadInfo
+- (void)clearXBoxLiveThreadInfo
 {
    [_libezvThreadProxy release]; _libezvThreadProxy = nil;
-   [bonjourThreadMessenger release]; bonjourThreadMessenger = nil;
+   [XBoxLiveThreadMessenger release]; XBoxLiveThreadMessenger = nil;
    [currentAutoreleasePool release]; currentAutoreleasePool = nil;
 }
 
-- (void)prepareBonjourThread
+- (void)prepareXBoxLiveThread
 {
 	NSTimer				*autoreleaseTimer;
 
 	currentAutoreleasePool = [[NSAutoreleasePool alloc] init];
 
-	bonjourThreadMessenger = [[NDRunLoopMessenger runLoopMessengerForCurrentRunLoop] retain];
-	_libezvThreadProxy = [[bonjourThreadMessenger target:libezv] retain];
+	XBoxLiveThreadMessenger = [[NDRunLoopMessenger runLoopMessengerForCurrentRunLoop] retain];
+	_libezvThreadProxy = [[XBoxLiveThreadMessenger target:libezv] retain];
 	
 	//Use a timer to periodically release our autorelease pool so we don't continually grow in memory usage
 	autoreleaseTimer = [[NSTimer scheduledTimerWithTimeInterval:AUTORELEASE_POOL_REFRESH
@@ -576,12 +576,12 @@ static	NSAutoreleasePool	*currentAutoreleasePool = nil;
 	[threadPreparednessLock unlock];
 	CFRunLoopRun();
 
-	[self clearBonjourThreadInfo];
+	[self clearXBoxLiveThreadInfo];
 	[autoreleaseTimer invalidate]; [autoreleaseTimer release];
 }
 
 /*!
- * @brief The bonjour thread is about to exit for some reason...
+ * @brief The XBoxLive thread is about to exit for some reason...
  *
  * I have no idea why the thread might exit, but it does.  Messaging the libezvThreadProxy after it exits throws an
  * NDRunLoopMessengerConnectionNoLongerExistsException exception.  If we clear out our data, perhaps we can recover fairly gracefully.
@@ -594,7 +594,7 @@ static	NSAutoreleasePool	*currentAutoreleasePool = nil;
 												selector:@selector(threadWillExit:) 
 												  object:[inNotification object]];
 	
-	[self clearBonjourThreadInfo];
+	[self clearXBoxLiveThreadInfo];
 }
 
 /*!

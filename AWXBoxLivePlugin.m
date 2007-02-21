@@ -22,15 +22,15 @@
  * 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-#import "AWBonjourAccount.h"
-#import "AWBonjourPlugin.h"
-#import "AWBonjourService.h"
+#import "AWXBoxLiveAccount.h"
+#import "AWXBoxLivePlugin.h"
+#import "AWXBoxLiveService.h"
 
-@implementation AWBonjourPlugin
+@implementation AWXBoxLivePlugin
 
 - (void)installPlugin
 {
-	[[AWBonjourService alloc] init];
+	[[AWXBoxLiveService alloc] init];
 }
 
 @end
